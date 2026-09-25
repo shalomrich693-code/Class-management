@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaBuilding, FaPlus, FaEdit, FaTrash, FaTimes } from 'react-icons/fa';
 
@@ -20,7 +21,7 @@ const DepartmentsPage = () => {
   const fetchDepartments = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/departments');
+      const response = await fetch(`${API_BASE_URL}/api/departments`);
       const data = await response.json();
       if (data.status === 'success') {
         setDepartments(data.data);
@@ -45,8 +46,8 @@ const DepartmentsPage = () => {
     e.preventDefault();
     try {
       const url = editingDepartment 
-        ? `http://localhost:5000/api/departments/${editingDepartment._id}`
-        : 'http://localhost:5000/api/departments';
+        ? `${API_BASE_URL}/api/departments/${editingDepartment._id}`
+        : `${API_BASE_URL}/api/departments`;
       
       const method = editingDepartment ? 'PUT' : 'POST';
       
@@ -92,7 +93,7 @@ const DepartmentsPage = () => {
         // Get token from localStorage
         const token = localStorage.getItem('token');
         
-        const response = await fetch(`http://localhost:5000/api/departments/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/departments/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`

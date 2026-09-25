@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaUserGraduate, FaEnvelope, FaPhone, FaIdCard, FaUpload } from 'react-icons/fa';
 import BulkUpload from './BulkUpload';
@@ -33,7 +34,7 @@ const TeachersPage = () => {
 
   const fetchTeachers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/teachers', {
+      const response = await fetch(`${API_BASE_URL}/api/teachers`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -76,8 +77,8 @@ const TeachersPage = () => {
       }
 
       const url = editingTeacher 
-        ? `http://localhost:5000/api/teachers/${editingTeacher._id}`
-        : 'http://localhost:5000/api/teachers';
+        ? `${API_BASE_URL}/api/teachers/${editingTeacher._id}`
+        : `${API_BASE_URL}/api/teachers`;
 
       const method = editingTeacher ? 'PUT' : 'POST';
       
@@ -143,7 +144,7 @@ const TeachersPage = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/teachers/${teacherId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/teachers/${teacherId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

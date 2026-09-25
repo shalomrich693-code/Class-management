@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaPlus, FaBook, FaChalkboardTeacher, FaUniversity, FaCalendarAlt, FaSearch, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
 
@@ -27,7 +28,7 @@ const CoursesPage = () => {
   // Fetch courses
   const fetchCourses = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/courses', {
+      const response = await fetch(`${API_BASE_URL}/api/courses`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -49,7 +50,7 @@ const CoursesPage = () => {
   // Fetch departments
   const fetchDepartments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/departments', {
+      const response = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -67,7 +68,7 @@ const CoursesPage = () => {
   // Fetch teachers
   const fetchTeachers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/teachers', {
+      const response = await fetch(`${API_BASE_URL}/api/teachers`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -86,7 +87,7 @@ const CoursesPage = () => {
   const fetchClasses = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/classes', {
+      const response = await fetch(`${API_BASE_URL}/api/classes`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -155,7 +156,7 @@ const CoursesPage = () => {
   const handleDeleteCourse = async (courseId) => {
     if (window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/courses/${courseId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -232,8 +233,8 @@ const CoursesPage = () => {
       
       // Determine URL and method based on whether we're editing or adding
       const url = editingCourse 
-        ? `http://localhost:5000/api/courses/${editingCourse._id}`
-        : 'http://localhost:5000/api/courses';
+        ? `${API_BASE_URL}/api/courses/${editingCourse._id}`
+        : `${API_BASE_URL}/api/courses`;
       
       const method = editingCourse ? 'PUT' : 'POST';
       

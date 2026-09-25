@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaHome, FaBook, FaCalendarAlt, FaUserGraduate, FaSignOutAlt, FaBars } from 'react-icons/fa';
 import TeacherSidebar from './TeacherSidebar';
@@ -32,7 +33,7 @@ const TeacherDashboard = ({ user, onLogout, courses = [], announcements = [], lo
         const token = localStorage.getItem('token');
         
         // Fetch total students count for this teacher only
-        const studentsRes = await fetch(`http://localhost:5000/api/teachers/${user._id}/students`, {
+        const studentsRes = await fetch(`${API_BASE_URL}/api/teachers/${user._id}/students`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -58,14 +59,14 @@ const TeacherDashboard = ({ user, onLogout, courses = [], announcements = [], lo
         });
         
         // Fetch recent activity (assignments and exams) - only for this teacher
-        const assignmentsRes = await fetch('http://localhost:5000/api/assignments', {
+        const assignmentsRes = await fetch(`${API_BASE_URL}/api/assignments`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
         
-        const examsRes = await fetch('http://localhost:5000/api/exams', {
+        const examsRes = await fetch(`${API_BASE_URL}/api/exams`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

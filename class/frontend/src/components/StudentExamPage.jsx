@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaCheck, FaClock, FaSave } from 'react-icons/fa';
@@ -25,7 +26,7 @@ const StudentExamPage = ({ user }) => {
 
   // Initialize WebSocket connection
   useEffect(() => {
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io(API_BASE_URL, { auth: { token: localStorage.getItem('token') } });
     setSocket(newSocket);
 
     // Connect to server
@@ -94,7 +95,7 @@ const StudentExamPage = ({ user }) => {
         }
         
         // Fetch exam details
-        const examUrl = `http://localhost:5000/api/exams/${examId}`;
+        const examUrl = `${API_BASE_URL}/api/exams/${examId}`;
         console.log('Fetching exam from URL:', examUrl);
         const examRes = await fetch(examUrl, {
           headers: {
@@ -144,7 +145,7 @@ const StudentExamPage = ({ user }) => {
         }
       
         // Fetch questions for this exam
-        const questionsUrl = `http://localhost:5000/api/questions?exam=${examId}`;
+        const questionsUrl = `${API_BASE_URL}/api/questions?exam=${examId}`;
         console.log('Fetching questions from URL:', questionsUrl);
         const questionsRes = await fetch(questionsUrl, {
           headers: {
@@ -296,7 +297,7 @@ const StudentExamPage = ({ user }) => {
       
       // First, check if a student exam record already exists
       console.log('Checking if student exam record already exists');
-      const checkStudentExamRes = await fetch(`http://localhost:5000/api/student-exams?student=${user._id}&exam=${examId}`, {
+      const checkStudentExamRes = await fetch(`${API_BASE_URL}/api/student-exams?student=${user._id}&exam=${examId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -318,7 +319,7 @@ const StudentExamPage = ({ user }) => {
         } else {
           // Create a new student exam record
           console.log('Creating new student exam record');
-          const studentExamRes = await fetch('http://localhost:5000/api/student-exams', {
+          const studentExamRes = await fetch(`${API_BASE_URL}/api/student-exams`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -348,7 +349,7 @@ const StudentExamPage = ({ user }) => {
       
       // Update student exam with submittedAt timestamp
       console.log('Updating student exam with submittedAt timestamp');
-      const updateRes = await fetch(`http://localhost:5000/api/student-exams/${studentExamId}`, {
+      const updateRes = await fetch(`${API_BASE_URL}/api/student-exams/${studentExamId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -375,7 +376,7 @@ const StudentExamPage = ({ user }) => {
         
         // Calculate score and save results
         console.log('Calculating score and saving results');
-        const calculateScoreRes = await fetch(`http://localhost:5000/api/student-exams/${studentExamId}/calculate-score`, {
+        const calculateScoreRes = await fetch(`${API_BASE_URL}/api/student-exams/${studentExamId}/calculate-score`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -403,7 +404,7 @@ const StudentExamPage = ({ user }) => {
         });
 
         try {
-          const saveResultRes = await fetch('http://localhost:5000/api/results/calculate', {
+          const saveResultRes = await fetch(`${API_BASE_URL}/api/results/calculate`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,

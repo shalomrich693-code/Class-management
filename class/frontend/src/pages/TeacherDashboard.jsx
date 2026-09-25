@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TeacherDashboardComponent from '../components/TeacherDashboard';
@@ -15,7 +16,7 @@ const TeacherDashboard = ({ user, onLogout }) => {
         const token = localStorage.getItem('token');
         
         // Fetch teacher's courses
-        const coursesRes = await fetch(`http://localhost:5000/api/teachers/${user._id}/courses`, {
+        const coursesRes = await fetch(`${API_BASE_URL}/api/teachers/${user._id}/courses`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -28,7 +29,7 @@ const TeacherDashboard = ({ user, onLogout }) => {
         }
 
         // Fetch announcements
-        const announcementsRes = await fetch('http://localhost:5000/api/announcements', {
+        const announcementsRes = await fetch(`${API_BASE_URL}/api/announcements`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState } from 'react';
 import { FaUpload, FaFileCsv, FaTimes, FaDownload } from 'react-icons/fa';
 
@@ -71,8 +72,8 @@ const BulkUpload = ({ onUpload, entityName, endpoint, token, departmentId = '', 
     try {
       // Determine the correct endpoint based on entity type
       const endpoint = entityName === 'student' 
-        ? 'http://localhost:5000/api/students/bulk-upload'
-        : 'http://localhost:5000/api/teachers/bulk-upload';
+        ? `${API_BASE_URL}/api/students/bulk-upload`
+        : `${API_BASE_URL}/api/teachers/bulk-upload`;
       
       console.log('Sending request to:', endpoint);
       

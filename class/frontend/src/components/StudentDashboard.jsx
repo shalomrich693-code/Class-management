@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StudentSidebar from './StudentSidebar';
@@ -76,7 +77,7 @@ const StudentDashboard = ({ user, onLogout }) => {
 
   // Initialize WebSocket connection
   useEffect(() => {
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io(API_BASE_URL, { auth: { token: localStorage.getItem('token') } });
     setSocket(newSocket);
 
     // Connect to server
@@ -106,7 +107,7 @@ const StudentDashboard = ({ user, onLogout }) => {
       const token = localStorage.getItem('token');
       const studentId = user._id;
 
-      const examsRes = await fetch(`http://localhost:5000/api/students/${studentId}/exams`, {
+      const examsRes = await fetch(`${API_BASE_URL}/api/students/${studentId}/exams`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -147,19 +148,19 @@ const StudentDashboard = ({ user, onLogout }) => {
           resultsRes,
           announcementsRes
         ] = await Promise.all([
-          fetch(`http://localhost:5000/api/students/${studentId}/courses`, {
+          fetch(`${API_BASE_URL}/api/students/${studentId}/courses`, {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          fetch(`http://localhost:5000/api/students/${studentId}/exams`, {
+          fetch(`${API_BASE_URL}/api/students/${studentId}/exams`, {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          fetch(`http://localhost:5000/api/students/${studentId}/assignments`, {
+          fetch(`${API_BASE_URL}/api/students/${studentId}/assignments`, {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          fetch(`http://localhost:5000/api/students/${studentId}/results`, {
+          fetch(`${API_BASE_URL}/api/students/${studentId}/results`, {
             headers: { 'Authorization': `Bearer ${token}` }
           }),
-          fetch(`http://localhost:5000/api/students/${studentId}/announcements`, {
+          fetch(`${API_BASE_URL}/api/students/${studentId}/announcements`, {
             headers: { 'Authorization': `Bearer ${token}` }
           })
         ]);
@@ -214,7 +215,7 @@ const StudentDashboard = ({ user, onLogout }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}/download`, {
+      const response = await fetch(`${API_BASE_URL}/api/assignments/${assignmentId}/download`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

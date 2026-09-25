@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaQuestionCircle } from 'react-icons/fa';
 
@@ -33,7 +34,7 @@ const QuestionsPage = ({ user }) => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/questions`, {
+      const response = await fetch(`${API_BASE_URL}/api/questions`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -58,7 +59,7 @@ const QuestionsPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/exams?teacher=${user._id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/exams?teacher=${user._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -146,7 +147,7 @@ const QuestionsPage = ({ user }) => {
       // Create all questions
       const createdQuestions = [];
       for (const question of formData.questions) {
-        const response = await fetch('http://localhost:5000/api/questions', {
+        const response = await fetch(`${API_BASE_URL}/api/questions`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -246,7 +247,7 @@ const QuestionsPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/questions/${editingQuestion._id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/questions/${editingQuestion._id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -299,7 +300,7 @@ const QuestionsPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/questions/${questionId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/questions/${questionId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

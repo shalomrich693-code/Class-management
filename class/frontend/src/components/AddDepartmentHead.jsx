@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaUserShield, FaPlus, FaEdit, FaTrash, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -28,7 +29,7 @@ const AddDepartmentHead = ({ setActiveNav, user }) => {
 
   const fetchDepartmentHeads = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/department-heads');
+      const response = await fetch(`${API_BASE_URL}/api/department-heads`);
       const data = await response.json();
       if (data.status === 'success') {
         setDepartmentHeads(data.data);
@@ -42,7 +43,7 @@ const AddDepartmentHead = ({ setActiveNav, user }) => {
 
   const fetchDepartments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/departments');
+      const response = await fetch(`${API_BASE_URL}/api/departments`);
       const data = await response.json();
       if (data.status === 'success') {
         setDepartments(data.data);
@@ -83,8 +84,8 @@ const AddDepartmentHead = ({ setActiveNav, user }) => {
 
     try {
       const url = editingDepartmentHead 
-        ? `http://localhost:5000/api/department-heads/${editingDepartmentHead._id}`
-        : 'http://localhost:5000/api/department-heads';
+        ? `${API_BASE_URL}/api/department-heads/${editingDepartmentHead._id}`
+        : `${API_BASE_URL}/api/department-heads`;
       
       const method = editingDepartmentHead ? 'PUT' : 'POST';
       
@@ -146,7 +147,7 @@ const AddDepartmentHead = ({ setActiveNav, user }) => {
         // Get token from localStorage
         const token = localStorage.getItem('token');
         
-        const response = await fetch(`http://localhost:5000/api/department-heads/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/department-heads/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`

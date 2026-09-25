@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { 
   FaBars, 
@@ -52,22 +53,22 @@ const AdminDashboard = ({ user, onLogout }) => {
       
       // Fetch counts from different endpoints
       const [departmentHeadsRes, teachersRes, studentsRes, departmentsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/department-heads', {
+        fetch(`${API_BASE_URL}/api/department-heads`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         }),
-        fetch('http://localhost:5000/api/teachers', {
+        fetch(`${API_BASE_URL}/api/teachers`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         }),
-        fetch('http://localhost:5000/api/students', {
+        fetch(`${API_BASE_URL}/api/students`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         }),
-        fetch('http://localhost:5000/api/departments', {
+        fetch(`${API_BASE_URL}/api/departments`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

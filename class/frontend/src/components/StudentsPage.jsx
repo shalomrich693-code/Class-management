@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaPlus, FaUserGraduate, FaEnvelope, FaPhone, FaIdCard, FaUniversity, FaChalkboard, FaUpload, FaSearch, FaEdit, FaTrash, FaTimes } from 'react-icons/fa';
 import BulkUpload from './BulkUpload';
@@ -49,7 +50,7 @@ const StudentsPage = () => {
   // Fetch students from API
   const fetchStudents = async (classId = '') => {
     try {
-      let url = 'http://localhost:5000/api/students';
+      let url = `${API_BASE_URL}/api/students`;
       if (classId) {
         url += `?class=${classId}`;
       }
@@ -84,7 +85,7 @@ const StudentsPage = () => {
   // Fetch departments
   const fetchDepartments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/departments', {
+      const response = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -103,7 +104,7 @@ const StudentsPage = () => {
   const fetchClasses = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/classes', {
+      const response = await fetch(`${API_BASE_URL}/api/classes`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -188,7 +189,7 @@ const StudentsPage = () => {
   const handleDeleteStudent = async (studentId) => {
     if (window.confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/students/${studentId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/students/${studentId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -285,8 +286,8 @@ const StudentsPage = () => {
       
       // Determine URL and method based on whether we're editing or adding
       const url = editingStudent 
-        ? `http://localhost:5000/api/students/${editingStudent._id}`
-        : 'http://localhost:5000/api/students';
+        ? `${API_BASE_URL}/api/students/${editingStudent._id}`
+        : `${API_BASE_URL}/api/students`;
       
       const method = editingStudent ? 'PUT' : 'POST';
       

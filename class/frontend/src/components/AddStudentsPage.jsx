@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaCheck, FaTimes, FaSearch } from 'react-icons/fa';
 
@@ -37,7 +38,7 @@ const AddStudentsPage = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/add-students', {
+      const response = await fetch(`${API_BASE_URL}/api/add-students`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -60,7 +61,7 @@ const AddStudentsPage = () => {
     // Keeping it for backward compatibility
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/students', {
+      const response = await fetch(`${API_BASE_URL}/api/students`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -79,7 +80,7 @@ const AddStudentsPage = () => {
     // Keeping it for backward compatibility
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/courses', {
+      const response = await fetch(`${API_BASE_URL}/api/courses`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -96,7 +97,7 @@ const AddStudentsPage = () => {
   const fetchClasses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/classes', {
+      const response = await fetch(`${API_BASE_URL}/api/classes`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -114,7 +115,7 @@ const AddStudentsPage = () => {
   const fetchStudentsByClass = async (classId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/add-students/students-by-class/${classId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/add-students/students-by-class/${classId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -136,7 +137,7 @@ const AddStudentsPage = () => {
   const fetchCoursesByClass = async (classId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/add-students/courses-by-class/${classId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/add-students/courses-by-class/${classId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -219,8 +220,8 @@ const AddStudentsPage = () => {
     try {
       const token = localStorage.getItem('token');
       const url = editingAddStudent 
-        ? `http://localhost:5000/api/add-students/${editingAddStudent._id}`
-        : 'http://localhost:5000/api/add-students';
+        ? `${API_BASE_URL}/api/add-students/${editingAddStudent._id}`
+        : `${API_BASE_URL}/api/add-students`;
       
       const method = editingAddStudent ? 'PUT' : 'POST';
       
@@ -278,7 +279,7 @@ const AddStudentsPage = () => {
     if (window.confirm('Are you sure you want to delete this add student record?')) {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/add-students/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/add-students/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`

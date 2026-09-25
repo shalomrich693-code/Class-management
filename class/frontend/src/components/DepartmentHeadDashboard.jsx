@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaUser, FaBuilding, FaUsers, FaChalkboardTeacher, FaBars, FaHome, FaUserGraduate, FaChalkboard, FaBook, FaUserTie } from 'react-icons/fa';
 import DepartmentHeadSidebar from './DepartmentHeadSidebar.jsx';
@@ -82,19 +83,19 @@ const DepartmentHeadDashboard = ({ user, onLogout }) => {
         setLoading(true);
         
         const [teachersRes, studentsRes, coursesRes] = await Promise.all([
-          fetch('http://localhost:5000/api/teachers', {
+          fetch(`${API_BASE_URL}/api/teachers`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
               'Content-Type': 'application/json'
             }
           }),
-          fetch('http://localhost:5000/api/students', {
+          fetch(`${API_BASE_URL}/api/students`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
               'Content-Type': 'application/json'
             }
           }),
-          fetch('http://localhost:5000/api/courses', {
+          fetch(`${API_BASE_URL}/api/courses`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
               'Content-Type': 'application/json'

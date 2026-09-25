@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaClipboardList } from 'react-icons/fa';
 
@@ -26,7 +27,7 @@ const ExamsPage = ({ user }) => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/exams?teacher=${user._id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/exams?teacher=${user._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -52,7 +53,7 @@ const ExamsPage = ({ user }) => {
       const token = localStorage.getItem('token');
       
       // First, get the courses the teacher teaches
-      const coursesResponse = await fetch(`http://localhost:5000/api/teachers/${user._id}/courses`, {
+      const coursesResponse = await fetch(`${API_BASE_URL}/api/teachers/${user._id}/courses`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -75,7 +76,7 @@ const ExamsPage = ({ user }) => {
       // Fetch class details for these classes
       const classesData = await Promise.all(classIds.map(async (classId) => {
         try {
-          const classResponse = await fetch(`http://localhost:5000/api/classes/${classId}`, {
+          const classResponse = await fetch(`${API_BASE_URL}/api/classes/${classId}`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
@@ -107,7 +108,7 @@ const ExamsPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch('http://localhost:5000/api/classes', {
+      const response = await fetch(`${API_BASE_URL}/api/classes`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -146,8 +147,8 @@ const ExamsPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       const url = editingExam 
-        ? `http://localhost:5000/api/exams/${editingExam._id}` 
-        : 'http://localhost:5000/api/exams';
+        ? `${API_BASE_URL}/api/exams/${editingExam._id}` 
+        : `${API_BASE_URL}/api/exams`;
       
       const method = editingExam ? 'PUT' : 'POST';
       
@@ -219,7 +220,7 @@ const ExamsPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/exams/${examId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/exams/${examId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

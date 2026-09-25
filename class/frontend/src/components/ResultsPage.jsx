@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaFileAlt } from 'react-icons/fa';
 
@@ -15,7 +16,7 @@ const ResultsPage = ({ user }) => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      const response = await fetch('http://localhost:5000/api/results', {
+      const response = await fetch(`${API_BASE_URL}/api/results`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

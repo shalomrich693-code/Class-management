@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaBook, FaUsers, FaChalkboardTeacher, FaCalendarAlt } from 'react-icons/fa';
 
@@ -16,7 +17,7 @@ const MyClassesPage = ({ user }) => {
       const token = localStorage.getItem('token');
       
       // Fetch courses assigned to this teacher
-      const response = await fetch(`http://localhost:5000/api/teachers/${user._id}/courses`, {
+      const response = await fetch(`${API_BASE_URL}/api/teachers/${user._id}/courses`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -34,7 +35,7 @@ const MyClassesPage = ({ user }) => {
         data.data.map(async (course) => {
           try {
             const classId = course.class._id || course.class;
-            const studentResponse = await fetch(`http://localhost:5000/api/students/class/${classId}`, {
+            const studentResponse = await fetch(`${API_BASE_URL}/api/students/class/${classId}`, {
               headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'

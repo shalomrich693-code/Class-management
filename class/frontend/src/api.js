@@ -1,6 +1,7 @@
+import { API_BASE_URL } from './config.js';
 // API utility functions for communicating with the backend
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = API_BASE_URL;
 
 export const api = {
   // Fetch basic backend status

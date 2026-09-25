@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaChartBar, FaBook, FaUserGraduate, FaSearch, FaSave, FaEdit, FaEye, FaEyeSlash } from 'react-icons/fa';
 import StudentAnswersModal from './StudentAnswersModal';
@@ -37,7 +38,7 @@ const TeacherScoresPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/teachers/${user._id}/courses`, {
+      const response = await fetch(`${API_BASE_URL}/api/teachers/${user._id}/courses`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -71,7 +72,7 @@ const TeacherScoresPage = ({ user }) => {
       }
       
       // Fetch results for this teacher's courses
-      const response = await fetch(`http://localhost:5000/api/results/teacher/${user._id}${queryString}`, {
+      const response = await fetch(`${API_BASE_URL}/api/results/teacher/${user._id}${queryString}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -124,7 +125,7 @@ const TeacherScoresPage = ({ user }) => {
         return;
       }
       
-      const response = await fetch(`http://localhost:5000/api/results/${resultId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/results/${resultId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -161,7 +162,7 @@ const TeacherScoresPage = ({ user }) => {
       const token = localStorage.getItem('token');
       
       // First, get all exams for this course and exam title
-      const examsResponse = await fetch(`http://localhost:5000/api/exams?course=${courseId}&title=${encodeURIComponent(examTitle)}`, {
+      const examsResponse = await fetch(`${API_BASE_URL}/api/exams?course=${courseId}&title=${encodeURIComponent(examTitle)}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -192,7 +193,7 @@ const TeacherScoresPage = ({ user }) => {
         // Check each exam to see if the student has taken it
         let foundExam = false;
         for (const exam of exams) {
-          const studentExamResponse = await fetch(`http://localhost:5000/api/student-exams?student=${studentId}&exam=${exam._id}`, {
+          const studentExamResponse = await fetch(`${API_BASE_URL}/api/student-exams?student=${studentId}&exam=${exam._id}`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
@@ -237,7 +238,7 @@ const TeacherScoresPage = ({ user }) => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await fetch(`http://localhost:5000/api/results/${resultId}/visibility`, {
+      const response = await fetch(`${API_BASE_URL}/api/results/${resultId}/visibility`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -282,7 +283,7 @@ const TeacherScoresPage = ({ user }) => {
       const updatePromises = courseResults.map(result => {
         // Only update if not already visible
         if (!result.isVisibleToStudent) {
-          return fetch(`http://localhost:5000/api/results/${result._id}/visibility`, {
+          return fetch(`${API_BASE_URL}/api/results/${result._id}/visibility`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -328,7 +329,7 @@ const TeacherScoresPage = ({ user }) => {
       const updatePromises = courseResults.map(result => {
         // Only update if currently visible
         if (result.isVisibleToStudent) {
-          return fetch(`http://localhost:5000/api/results/${result._id}/visibility`, {
+          return fetch(`${API_BASE_URL}/api/results/${result._id}/visibility`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${token}`,

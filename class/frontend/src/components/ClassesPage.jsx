@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config.js';
 import { useState, useEffect } from 'react';
 import { FaPlus, FaUniversity, FaCalendarAlt, FaListAlt, FaTimes } from 'react-icons/fa';
 
@@ -68,7 +69,7 @@ const ClassesPage = ({ user }) => { // Accept user prop
   const fetchClasses = async () => {
     try {
       console.log('Fetching classes...');
-      const response = await fetch('http://localhost:5000/api/classes', {
+      const response = await fetch(`${API_BASE_URL}/api/classes`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -107,7 +108,7 @@ const ClassesPage = ({ user }) => { // Accept user prop
   const fetchDepartments = async () => {
     try {
       console.log('Fetching departments...');
-      const response = await fetch('http://localhost:5000/api/departments', {
+      const response = await fetch(`${API_BASE_URL}/api/departments`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -147,7 +148,7 @@ const ClassesPage = ({ user }) => { // Accept user prop
         throw new Error('All fields are required');
       }
 
-      const response = await fetch('http://localhost:5000/api/classes', {
+      const response = await fetch(`${API_BASE_URL}/api/classes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
