@@ -43,17 +43,23 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: __dirname + '/.env' });
 
 // Debug: Log the MONGO_URI to see if it's loaded
-console.log("MONGO_URI from .env:", process.env.MONGO_URI);
+// Keep database connection strings out of application logs.
 console.log("__dirname:", __dirname);
 
 const app = express();
+
+const allowedOrigins = (process.env.FRONTEND_ORIGINS || 'http://localhost:5173,http://localhost:5174,http://localhost:5175')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
 
 // Create HTTP server and Socket.IO instance
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
-    methods: ["GET", "POST"]
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
@@ -108,12 +114,39 @@ const calculateStudentExamScore = async (studentExamId) => {
   }
 };
 
+// Require a valid existing login token before accepting real-time connections.
+io.use((socket, next) => {
+  const token = socket.handshake.auth?.token;
+  if (!token) {
+    return next(new Error('Authentication required'));
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return next(new Error('Invalid or expired token'));
+    }
+    socket.data.user = user;
+    next();
+  });
+});
+
+const matchesSocketUser = (socket, userType, userId) => {
+  const user = socket.data.user;
+  return user?.userType === userType &&
+    user.id != null &&
+    String(user.id) === String(userId);
+};
+
 // Socket.IO connection handling
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
   
   // Handle student connection
   socket.on('student-connect', (studentId) => {
+    if (!matchesSocketUser(socket, 'student', studentId)) {
+      socket.emit('authorization-error', { error: 'Student identity does not match the authenticated user' });
+      return;
+    }
     console.log('Student connected:', studentId);
     connectedStudents.set(socket.id, studentId);
     
@@ -123,6 +156,10 @@ io.on('connection', (socket) => {
   
   // Handle teacher connection
   socket.on('teacher-connect', (teacherId) => {
+    if (!matchesSocketUser(socket, 'teacher', teacherId)) {
+      socket.emit('authorization-error', { error: 'Teacher identity does not match the authenticated user' });
+      return;
+    }
     console.log('Teacher connected:', teacherId);
     socket.join(`teacher-${teacherId}`);
   });
@@ -133,6 +170,11 @@ io.on('connection', (socket) => {
       console.log('Save answer event received:', data);
       
       const { studentId, examId, questionId, selectedOption } = data;
+
+      if (!matchesSocketUser(socket, 'student', studentId)) {
+        socket.emit('answer-save-error', { error: 'Student identity does not match the authenticated user' });
+        return;
+      }
       
       // Validate required fields
       if (!studentId || !examId || !questionId || !selectedOption) {
@@ -204,11 +246,7 @@ io.on('connection', (socket) => {
 
 // Enable CORS for all routes
 app.use((req, res, next) => {
-  const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175'
-  ];
+  
   
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -453,4 +491,4 @@ const getUserFromToken = async (tokenPayload) => {
 };
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
